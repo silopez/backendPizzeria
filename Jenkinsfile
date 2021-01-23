@@ -38,11 +38,12 @@ pipeline {
 
     
     stage('Compile & Unit Tests') {
-      steps{
-        echo "------------>Unit Tests<------------"
+		steps{
+			echo "------------>Unit Tests<------------"
+			sh 'gradle --b ./build.gradle test'
+		}
+	}
 
-      }
-    }
 
     stage('Static Code Analysis') {
       steps{
@@ -56,7 +57,6 @@ pipeline {
     stage('Build') {
       steps {
         echo "------------>Build<------------"
-        sh 'gradle --b ./pedidos-pizza-backend/build.gradle clean compileJava'
       }
     }  
   }
