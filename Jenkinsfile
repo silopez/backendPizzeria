@@ -56,6 +56,7 @@ pipeline {
     stage('Build') {
       steps {
         echo "------------>Build<------------"
+        sh 'gradle --b ./pedidos-pizza-backend/build.gradle clean compileJava'
       }
     }  
   }
