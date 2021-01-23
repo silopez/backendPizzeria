@@ -18,11 +18,24 @@ pipeline {
 
   //Aquí comienzan los “items” del Pipeline
   stages{
-    stage('Checkout') {
-      steps{
-        echo "------------>Checkout<------------"
-      }
-    }
+    stage('Checkout'){
+		steps{
+			echo "------------>Checkout<------------"
+			checkout([
+			$class: 'GitSCM', 
+			branches: [[name: '*/master']], 
+			doGenerateSubmoduleConfigurations: false, 
+			extensions: [], 
+			gitTool: 'Default', 
+			submoduleCfg: [], 
+			userRemoteConfigs: [[
+			credentialsId: 'GitHub_silopez', 
+			url:'https://github.com/silopez/backendPizzeria'
+			]]
+			])
+		}
+	}
+
     
     stage('Compile & Unit Tests') {
       steps{
@@ -35,7 +48,7 @@ pipeline {
       steps{
         echo '------------>Análisis de código estático<------------'
         withSonarQubeEnv('Sonar') {
-sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
+		sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
         }
       }
     }
