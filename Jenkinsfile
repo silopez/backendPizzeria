@@ -41,19 +41,20 @@ pipeline {
 		steps{
 			echo "------------>Unit Tests<------------"
 			sh 'gradle --b ./build.gradle clean'
-			sh 'gradle --b ./build.gradle test'
+			echo "sh 'gradle --b ./build.gradle test'"
 		}
 	}
 
 
     stage('Static Code Analysis') {
-      steps{
-        echo '------------>Análisis de código estático<------------'
-        withSonarQubeEnv('Sonar') {
-		sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
-        }
-      }
-    }
+		steps{
+			echo '------------>Análisis de código estático<------------'
+			withSonarQubeEnv('Sonar') {
+				sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner"
+			}
+	     }
+	}
+
 
     stage('Build') {
       steps {
